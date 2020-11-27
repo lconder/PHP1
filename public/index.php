@@ -8,8 +8,8 @@
  * @link     http://www.etsisi.upm.es ETS de Ingeniería de Sistemas Informáticos
  */
 
-require_once __DIR__ . '/../vendor/autoload.php';
-require_once __DIR__ . '/../src/controllers.php';
+require dirname(__DIR__) . '/vendor/autoload.php';
+require_once dirname(__DIR__) . '/src/controllers.php';
 
 use MiW\Results\Utility\Utils;
 use Symfony\Component\Routing\Loader\YamlFileLoader;
@@ -20,10 +20,10 @@ use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use Symfony\Component\Routing\RouteCollection;
 
-Utils::loadEnv(__DIR__ . '/../');
+Utils::loadEnv(dirname(__DIR__));
 
 // Empleando el componente symfony/config cargamos todas las rutas
-$locator = new FileLocator([ __DIR__ . '/../' . $_ENV['CONFIG_DIR'] ]);
+$locator = new FileLocator([ dirname(__DIR__) . $_ENV['CONFIG_DIR'] ]);
 $loader  = new YamlFileLoader($locator);
 /** @var RouteCollection $routes */
 $routes  = $loader->load($_ENV['ROUTES_FILE']);

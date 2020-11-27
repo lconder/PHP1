@@ -9,13 +9,13 @@
  * @link     http://www.etsisi.upm.es/ ETS de Ingeniería de Sistemas Informáticos
  */
 
+require dirname(__DIR__, 2) . '/vendor/autoload.php';
+
 use MiW\Results\Entity\User;
 use MiW\Results\Utility\Utils;
 
-require __DIR__ . '/../../vendor/autoload.php';
-
 // Carga las variables de entorno
-Utils::loadEnv(__DIR__ . '/../../');
+Utils::loadEnv(dirname(__DIR__, 2));
 
 $entityManager = Utils::getEntityManager();
 

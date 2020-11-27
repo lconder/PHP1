@@ -2,7 +2,7 @@
 
 /**
  * PHP version 7.4
- * src/cli-config.php
+ * config/cli-config.php
  *
  * @category Utils
  * @license  https://opensource.org/licenses/MIT MIT License
@@ -13,7 +13,7 @@ use Doctrine\ORM\Tools\Console\ConsoleRunner;
 use MiW\Results\Utility\Utils;
 
 // Load env variables from .env + (.docker ||.local )
-Utils::loadEnv(__DIR__ . '/..');
+Utils::loadEnv(dirname(__DIR__));
 
 $entityManager = Utils::getEntityManager();
 

@@ -2,20 +2,20 @@
 
 /**
  * PHP version 7.4
- * src/list_users.php
+ * src/scripts/list_users.php
  *
  * @category Scripts
  * @license  https://opensource.org/licenses/MIT MIT License
  * @link     http://www.etsisi.upm.es/ ETS de Ingeniería de Sistemas Informáticos
  */
 
+require dirname(__DIR__, 2) . '/vendor/autoload.php';
+
 use MiW\Results\Entity\User;
 use MiW\Results\Utility\Utils;
 
-require __DIR__ . '/../../vendor/autoload.php';
-
 // Carga las variables de entorno
-Utils::loadEnv(__DIR__ . '/../../');
+Utils::loadEnv(dirname(__DIR__, 2));
 
 $entityManager = Utils::getEntityManager();
 

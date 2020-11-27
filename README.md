@@ -27,12 +27,12 @@ como `./.env.local`. Después se debe editar dicho fichero y modificar las varia
 pueden quedar como comentarios). Una vez editado el anterior fichero y desde el directorio raíz del
 proyecto se deben ejecutar los comandos:
 ```
-$ composer install
-$ bin\doctrine orm:schema:update --dump-sql --force
+$ composer update
+$ ./bin/doctrine orm:schema-tool:update --dump-sql --force
 ```
 Para verificar la validez de la información de mapeo y la sincronización con la base de datos:
 ```
-$ bin\doctrine orm:schema:validate
+$ ./bin/doctrine orm:validate-schema
 ```
 
 ##Estructura del proyecto:
