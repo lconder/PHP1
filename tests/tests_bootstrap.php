@@ -16,4 +16,5 @@ require_once __DIR__ . '/../vendor/autoload.php';
 mt_srand();
 
 // Create/update tables in the test database
-Utils::updateSchema();
+// Only required if functional testing is performed
+// Utils::updateSchema();

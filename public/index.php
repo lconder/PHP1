@@ -29,7 +29,10 @@ $loader  = new YamlFileLoader($locator);
 $routes  = $loader->load($_ENV['ROUTES_FILE']);
 
 // obtenemos el contexto de la petición HTTP
-$context = new RequestContext(filter_input(INPUT_SERVER, 'REQUEST_URI'));
+$context = new RequestContext(
+    filter_input(INPUT_SERVER, 'REQUEST_URI'),
+    filter_input(INPUT_SERVER, 'REQUEST_METHOD')
+);
 
 // Obtiene la clase de resolución de rutas
 $matcher = new UrlMatcher($routes, $context);
