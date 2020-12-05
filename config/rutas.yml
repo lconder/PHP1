@@ -7,13 +7,29 @@ ruta_raíz:
 
 ruta_user_list:
     path:     /users
-    controller: 'funcionListadoUsuarios'
+    controller: 'users'
     methods:
-      - GET
+        - GET
+        - POST
 
 ruta_user:
     path:     /users/{name}
-    controller: 'funcionUsuario'
+    controller: 'user'
+    defaults:
+        name: _default_
+    methods:
+        - GET
+        - DELETE
+
+carga_formulario:
+    path:     /create
+    controller: 'create'
+    methods:
+        - GET
+
+ruta_results:
+    path:     /results/{name}/user
+    controller: 'results'
     defaults:
         name: _default_
     methods:

@@ -25,7 +25,6 @@ Utils::loadEnv(dirname(__DIR__));
 // Empleando el componente symfony/config cargamos todas las rutas
 $locator = new FileLocator([ dirname(__DIR__) . $_ENV['CONFIG_DIR'] ]);
 $loader  = new YamlFileLoader($locator);
-/** @var RouteCollection $routes */
 $routes  = $loader->load($_ENV['ROUTES_FILE']);
 
 // obtenemos el contexto de la petición HTTP
@@ -38,7 +37,7 @@ $context = new RequestContext(
 $matcher = new UrlMatcher($routes, $context);
 
 // Obtenemos la información asociada a la petición
-$path_info = filter_input(INPUT_SERVER, 'PATH_INFO') ?? '/';
+$path_info = filter_input(INPUT_SERVER, 'REQUEST_URI') ?? '/';
 
 try {
     $parameters = $matcher->match($path_info);
