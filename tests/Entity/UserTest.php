@@ -72,7 +72,7 @@ class UserTest extends TestCase
      */
     public function testGetId(): void
     {
-        $this->assertEquals($this->user->getID(), $this->user->getID());
+        $this->assertIsInt($this->user->getID());
     }
 
     /**

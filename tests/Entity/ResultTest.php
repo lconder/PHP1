@@ -12,6 +12,7 @@
 
 namespace MiW\Results\Tests\Entity;
 
+use Faker\Factory;
 use MiW\Results\Entity\Result;
 use MiW\Results\Entity\User;
 
@@ -22,6 +23,7 @@ use MiW\Results\Entity\User;
  */
 class ResultTest extends \PHPUnit\Framework\TestCase
 {
+    private $faker;
     /**
      * @var User $user
      */
@@ -51,6 +53,7 @@ class ResultTest extends \PHPUnit\Framework\TestCase
         $this->user = new User();
         $this->user->setUsername(self::USERNAME);
         $this->time = new \DateTime('now');
+        $this->faker = Factory::create();
         $this->result = new Result(
             self::POINTS,
             $this->user,
@@ -64,16 +67,20 @@ class ResultTest extends \PHPUnit\Framework\TestCase
      * @covers \MiW\Results\Entity\Result::__construct()
      * @covers \MiW\Results\Entity\Result::getId()
      * @covers \MiW\Results\Entity\Result::getResult()
-     * @covers \MiW\Results\Entity\Result::getUser()
-     * @covers \MiW\Results\Entity\Result::getTime()
+     * @covers \MiW\Results\Entity\Result::getFormattedTime()
      *
      * @return void
      */
     public function testConstructor(): void
     {
-        self::markTestIncomplete(
-            'This test has not been implemented yet.'
+        $this->result = new Result(
+            self::POINTS,
+            $this->user,
+            $this->time
         );
+        $this->assertIsInt($this->result->getId());
+        $this->assertEquals(self::POINTS, $this->result->getResult());
+        $this->assertIsString($this->result->getFormattedTime());
     }
 
     /**
@@ -84,9 +91,7 @@ class ResultTest extends \PHPUnit\Framework\TestCase
      */
     public function testGetId():void
     {
-        self::markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->assertIsInt($this->result->getId());
     }
 
     /**
@@ -98,37 +103,22 @@ class ResultTest extends \PHPUnit\Framework\TestCase
      */
     public function testResult(): void
     {
-        self::markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
-    }
-
-    /**
-     * Implement testUser().
-     *
-     * @covers \MiW\Results\Entity\Result::setUser()
-     * @covers \MiW\Results\Entity\Result::getUser()
-     * @return void
-     */
-    public function testUser(): void
-    {
-        self::markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+       $result = $this->faker->numberBetween(0, 1000);
+       $this->result->setResult($result);
+       $this->assertEquals($result, $this->result->getResult());
     }
 
     /**
      * Implement testTime().
      *
      * @covers \MiW\Results\Entity\Result::setTime
-     * @covers \MiW\Results\Entity\Result::getTime
+     * @covers \MiW\Results\Entity\Result::getFormattedTime
      * @return void
      */
     public function testTime(): void
     {
-        self::markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->result->setTime(new \DateTime('now'));
+        $this->assertIsString($this->result->getFormattedTime());
     }
 
     /**
@@ -139,9 +129,14 @@ class ResultTest extends \PHPUnit\Framework\TestCase
      */
     public function testToString(): void
     {
-        self::markTestIncomplete(
-            'This test has not been implemented yet.'
+        $candidate = sprintf(
+            '%3d - %3d - %22s - %s',
+            $this->result->getId(),
+            $this->result->getResult(),
+            $this->user->getUsername(),
+            $this->result->getFormattedTime()
         );
+        $this->assertEquals($candidate, $this->result->__toString());
     }
 
     /**
@@ -152,8 +147,12 @@ class ResultTest extends \PHPUnit\Framework\TestCase
      */
     public function testJsonSerialize(): void
     {
-        self::markTestIncomplete(
-            'This test has not been implemented yet.'
+        $candidate = array(
+            'id'     => $this->result->getId(),
+            'result' => $this->result->getResult(),
+            'user'   => $this->user,
+            'time'   => $this->result->getFormattedTime()
         );
+        $this->assertEquals($candidate, $this->result->jsonSerialize());
     }
 }

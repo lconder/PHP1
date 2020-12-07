@@ -141,8 +141,6 @@ class Result implements JsonSerializable
         $this->time = $time;
     }
 
-
-
     /**
      * Implements __toString()
      *
