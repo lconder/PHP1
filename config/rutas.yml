@@ -1,5 +1,5 @@
 # rutas.yml
----
+
 ruta_raíz:
     path:     /
     controller: 'funcionHomePage'
@@ -29,9 +29,24 @@ carga_formulario:
 
 ruta_results:
     path:     /results/{name}/user
-    controller: 'results'
+    controller: 'resultsByUser'
     defaults:
         name: _default_
     methods:
         - GET
-        - DELETE
+
+results_create:
+    path:     /results/{name}
+    controller: 'formResult'
+    defaults:
+        name: _default_
+    methods:
+        - GET
+
+results:
+    path:     /results
+    controller: 'results'
+    defaults:
+        name: _default_
+    methods:
+        - POST

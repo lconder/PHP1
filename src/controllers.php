@@ -8,6 +8,7 @@
  * @link     http://www.etsisi.upm.es/ ETS de Ingeniería de Sistemas Informáticos
  */
 
+use MiW\Results\Entity\Result;
 use MiW\Results\Entity\User;
 use MiW\Results\Utility\Utils;
 
@@ -31,7 +32,6 @@ function users(): void {
 
         $userRepository = $entityManager->getRepository(User::class);
         $users = $userRepository->findAll();
-        //var_dump($users);
         $table_content = "";
         foreach ($users as $user) {
             $isAdmin = $user->isAdmin() ? "Si" : "No";
@@ -69,7 +69,6 @@ function users(): void {
 }
 
 function user(string $name) {
-
     try {
         $entityManager = Utils::getEntityManager();
         $userRepository = $entityManager->getRepository(User::class);
@@ -92,10 +91,6 @@ function user(string $name) {
     } catch (Throwable $exception) {
         echo $exception->getMessage() . PHP_EOL;
     }
-}
-
-function results(string $name) {
-    echo $name;
 }
 
 function createOrUpdate($data) {
@@ -230,6 +225,96 @@ function create() {
 
 function delete() {
     return '<div></div>';
+}
+
+
+function resultsByUser($name) {
+
+    try {
+        $entityManager = Utils::getEntityManager();
+
+        $userRepository = $entityManager->getRepository(Result::class);
+        $results = $userRepository->findBy(['user' => $name]);
+
+        $table_content = "";
+        foreach ($results as $result) {
+            $table_content .= "<tr>
+                            <td>".$result->getResult()."</td>
+                            <td>".$result->getFormattedTime()."</td>
+                          </tr>";
+        }
+        echo <<< ____MARCA_FIN
+        <div>
+            <h1>Resultados por usuario</h1>
+            <a href="/results/$name">Crear nuevo resultado para este usuario</a>
+            <br><br>
+           <table style="border: 1px solid black;">
+              <tr>
+                <th>Resultado</th>
+                <th>Tiempo</th>
+              </tr>
+              $table_content
+           </table>
+           <a href="/users">Regresar a Usuarios</a>
+        </div>
+        ____MARCA_FIN;
+    } catch (Throwable $exception) {
+        echo $exception->getMessage() . PHP_EOL;
+    }
+}
+
+function formResult($name) {
+    echo "<div>
+                <h1>Crear nuevo usuario</h1>
+                <form method='post' action='/results'>
+                    <label for='result'>Resultado</label>
+                    <input
+                        type='number'
+                        name='result'
+                        id='result'
+                        placeholder='Resultado'
+                        required
+                    ><br>
+                    <input
+                        type='hidden'
+                        name='user'
+                        id='user    '
+                        value='".$name."'
+                    >
+                    <input type='submit' value='Aceptar'>
+                </form>
+                <a href='/results/$name/user'>Regresar a Resultados</a>
+            </div>";
+}
+
+function results() {
+    $result = $_POST['result'];
+    $userId = $_POST['user'];
+    $time = new DateTime('now');
+
+    $entityManager = Utils::getEntityManager();
+
+    /** @var User $user */
+    $user = $entityManager
+        ->getRepository(User::class)
+        ->findOneBy(['id' => $userId    ]);
+    if (is_null($user)) {
+        echo "Usuario $userId no encontrado" . PHP_EOL;
+        exit(0);
+    }
+
+    $result = new Result($result, $user, $time);
+
+    try {
+        $entityManager->persist($result);
+        $entityManager->flush();
+        resultsByUser($userId);
+        echo 'Resultado creado con ID ' . $result->getId()
+            . ' USER: ' . $user->getUsername() . PHP_EOL;
+    } catch (Throwable $exception) {
+        echo $exception->getMessage();
+    }
+
 }
 
 function load404() {

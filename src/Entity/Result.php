@@ -105,6 +105,45 @@ class Result implements JsonSerializable
     }
 
     /**
+     * @return int
+     */
+    public function getResult(): int
+    {
+        return $this->result;
+    }
+
+    /**
+     * @return DateTime|null
+     */
+    public function getTime(): ?DateTime
+    {
+        return $this->time;
+    }
+
+    public function getFormattedTime(): string
+    {
+        return $this->time->format('Y-m-d H:i:s');
+    }
+
+    /**
+     * @param int $result
+     */
+    public function setResult(int $result): void
+    {
+        $this->result = $result;
+    }
+
+    /**
+     * @param DateTime|null $time
+     */
+    public function setTime(?DateTime $time): void
+    {
+        $this->time = $time;
+    }
+
+
+
+    /**
      * Implements __toString()
      *
      * @return string
