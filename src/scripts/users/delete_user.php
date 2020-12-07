@@ -12,6 +12,7 @@
 require dirname(__DIR__, 3) . '/vendor/autoload.php';
 
 use MiW\Results\Entity\User;
+use MiW\Results\Entity\Result;
 use MiW\Results\Utility\Utils;
 
 // Carga las variables de entorno
@@ -20,6 +21,7 @@ Utils::loadEnv(dirname(__DIR__, 3));
 $entityManager = Utils::getEntityManager();
 
 $userRepository = $entityManager->getRepository(User::class);
+$resultRepository = $entityManager->getRepository(Result::class);
 
 if($argc < 2) {
     echo 'Por favor ingresa el ID del usuario a buscar como parametro '.PHP_EOL;
@@ -52,6 +54,10 @@ if (in_array('--json', $argv, true)) {
 }
 
 try {
+    $results = $resultRepository->findBy(['user' => $argv[1]]);
+    foreach ($results as $result) {
+        $entityManager->remove($result);
+    }
     $entityManager->remove($user);
     $entityManager->flush();
     echo 'Usuario eliminado!' .PHP_EOL;
